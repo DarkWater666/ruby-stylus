@@ -1,3 +1,9 @@
+### 1.0.2.epuber
+
+Private version for my project.
+
+* Add support for defines, see `.define` in [learnboost.github.io/stylus](https://learnboost.github.io/stylus/docs/js.html)
+
 ### 1.0.1
 
 * Prevent exceptions from files without extensions.
