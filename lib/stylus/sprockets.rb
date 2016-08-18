@@ -38,8 +38,18 @@ module Stylus
 
     Stylus.debug = options.fetch(:debug, Stylus.debug)
     Stylus.compress = options.fetch(:compress, Stylus.compress)
-    template = detect_template_hander(options)
-    environment.register_engine('.styl', template)
+    template = detect_template_handler(options)
+
+    if environment.respond_to?(:register_transformer)
+      environment.register_mime_type 'text/css', extensions: ['.styl'], charset: :css
+    end
+
+    if environment.respond_to?(:register_engine)
+      args = ['.styl', template]
+      args << { mime_type: 'text/css', silence_deprecation: true } if Sprockets::VERSION.start_with?('3')
+      environment.register_engine(*args)
+    end
+
     environment.register_preprocessor('text/css', Stylus::ImportProcessor)
   end
 
@@ -48,7 +58,7 @@ module Stylus
   # returned instead of the default Stylus Tilt template.
   #
   # Returns a Tilt::Template children class.
-  def self.detect_template_hander(options = {})
+  def self.detect_template_handler(options = {})
     if options[:rails]
       Stylus::Rails::StylusTemplate
     else
