@@ -1,6 +1,7 @@
 *.gem
 node_modules
 .bundle
+.idea/*
 pkg/*
 spec/support/generators/tmp/
 docs
